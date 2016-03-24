@@ -12,29 +12,33 @@
 
 using namespace std;
 
-static const char * data = "Hello World";
+const char ACK = 0x6; //this is the Acknowledge byte in ASCII
 
 int main(int argc, char *argv[]) {
-	u_short port = 3778;
-	int sock;
-	struct sockaddr_in server; // this structure defines how do we connect
-
 	/*
 	 * Create a socket by opening a TCP connection (SOCK_STREAM)
 	 * over the internet (AF_INET)
 	 */
-	sock = socket(AF_INET, SOCK_STREAM, 0);
+	int sock = socket(AF_INET, SOCK_STREAM, 0);
 	if (sock == -1) {
 		cerr << "opening stream socket: " << strerror(errno) << endl;
 		exit(1);
 	}
 
+	sockaddr_in server;
 	server.sin_family = AF_INET;
-	server.sin_port = htons(port); // host to network short);
 
 	/*-----------------------------------------------------------------------*/
 
 	server.sin_addr.s_addr = inet_addr("127.0.0.1");
+
+	u_short port_num;
+	cout << "Connect to port: ";
+	cin >> port_num;
+	server.sin_port = htons(port_num);
+
+	string junk;
+	getline(cin, junk); // throw away the newline so we do not send it later
 
 	if (connect(
 			sock, // file descripter
@@ -45,6 +49,7 @@ int main(int argc, char *argv[]) {
 		exit(1);
 	}
 
+	/*-----------------------------------------------------------------------*/
 	while (1) {
 		string message;
 		getline(cin, message);
@@ -54,6 +59,11 @@ int main(int argc, char *argv[]) {
 			message.size(),
 			0 // flags
 		);
+
+		char val;
+		recv(sock, &val, sizeof(val), 0);
+		if (val == ACK)
+			cout << "Message received!" << endl;
 	}
 }
 
