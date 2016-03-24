@@ -1,3 +1,7 @@
+.PHONY: all clean
+
+all: server client
+
 server: server.cc
 	g++ server.cc -std=c++11 -o server
 
