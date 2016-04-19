@@ -23,7 +23,7 @@ sin_falimuly is always set to AF_INET.
 
 
 `struct hostent` is used to represent an entry in the hosts data base.
-```
+```cpp
 sturct hostent {
 	char *h_name		// name of the host.
 	char **h_aliases	// alternative names for the host
