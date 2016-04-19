@@ -44,7 +44,7 @@ sturct hostent {
 * The constant INADDR_ANY is the so-called IPv4 wildcard address. The wildcard IP address is useful for applications that bind Internet domain sockets on multihomed hosts. When INADDR_ANY is specified in the bind call,
        the socket will be bound to all local interfaces. 
 
-```
+```cpp
 #include <arpa/inet.h>
 uint32_t htonl(uint32_t hostlong);
 uint16_t htons(uint16_t hostshort);
